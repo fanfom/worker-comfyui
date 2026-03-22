@@ -1,5 +1,32 @@
 #!/usr/bin/env bash
 
+mkdir -p /comfyui/models
+
+# Link ipadapter models (Unified Loader expects /comfyui/models/ipadapter)
+if [ -d "/runpod-volume/models/ipadapter" ]; then
+  rm -rf /comfyui/models/ipadapter
+  ln -s /runpod-volume/models/ipadapter /comfyui/models/ipadapter
+  echo "Linked /comfyui/models/ipadapter -> /runpod-volume/models/ipadapter"
+else
+  echo "WARNING: /runpod-volume/models/ipadapter not found"
+fi
+
+# Link clip_vision (optional, but keeps everything consistent)
+if [ -d "/runpod-volume/models/clip_vision" ]; then
+  rm -rf /comfyui/models/clip_vision
+  ln -s /runpod-volume/models/clip_vision /comfyui/models/clip_vision
+  echo "Linked /comfyui/models/clip_vision -> /runpod-volume/models/clip_vision"
+else
+  echo "WARNING: /runpod-volume/models/clip_vision not found"
+fi
+
+# Quick sanity listing
+ls -lah /comfyui/models || true
+ls -lah /comfyui/models/ipadapter || true
+ls -lah /comfyui/models/clip_vision || true
+
+
+
 cp -f /src/extra_model_paths.yaml /comfyui/extra_model_paths.yaml
 echo "Installed extra_model_paths.yaml"
 ls -lah /comfyui/extra_model_paths.yaml

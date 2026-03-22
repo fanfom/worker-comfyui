@@ -1,23 +1,9 @@
 #!/usr/bin/env bash
 
-echo "START.SH: injecting clip_vision"
+cp -f /src/extra_model_paths.yaml /comfyui/extra_model_paths.yaml
+echo "Installed extra_model_paths.yaml"
+ls -lah /comfyui/extra_model_paths.yaml
 
-SRC="/runpod-volume/models/clip_vision/model.safetensors"
-DST_DIR="/comfyui/models/clip_vision"
-mkdir -p "$DST_DIR"
-
-echo "SRC=$SRC"
-ls -lah /runpod-volume/models/clip_vision || true
-
-if [ -f "$SRC" ]; then
-  cp -f "$SRC" "$DST_DIR/model.safetensors"
-  cp -f "$SRC" "$DST_DIR/open_clip_model.safetensors"
-  echo "Copied clip vision into $DST_DIR"
-else
-  echo "ERROR: $SRC not found"
-fi
-
-ls -lah "$DST_DIR" || true
 # Start SSH server if PUBLIC_KEY is set (enables remote access and dev-sync.sh)
 if [ -n "$PUBLIC_KEY" ]; then
     mkdir -p ~/.ssh

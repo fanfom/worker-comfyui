@@ -1,5 +1,23 @@
 #!/usr/bin/env bash
 
+echo "START.SH: injecting clip_vision"
+
+SRC="/runpod-volume/models/clip_vision/model.safetensors"
+DST_DIR="/comfyui/models/clip_vision"
+mkdir -p "$DST_DIR"
+
+echo "SRC=$SRC"
+ls -lah /runpod-volume/models/clip_vision || true
+
+if [ -f "$SRC" ]; then
+  cp -f "$SRC" "$DST_DIR/model.safetensors"
+  cp -f "$SRC" "$DST_DIR/open_clip_model.safetensors"
+  echo "Copied clip vision into $DST_DIR"
+else
+  echo "ERROR: $SRC not found"
+fi
+
+ls -lah "$DST_DIR" || true
 # Start SSH server if PUBLIC_KEY is set (enables remote access and dev-sync.sh)
 if [ -n "$PUBLIC_KEY" ]; then
     mkdir -p ~/.ssh
@@ -49,20 +67,6 @@ echo "worker-comfyui: GPU available — $GPU_CHECK"
 
 # Ensure ComfyUI-Manager runs in offline network mode inside the container
 comfy-manager-set-mode offline || echo "worker-comfyui - Could not set ComfyUI-Manager network_mode" >&2
-
-# --- Make CLIP vision discoverable for IPAdapterUnifiedLoader ---
-SRC="/runpod-volume/models/clip_vision/model.safetensors"
-DST="/comfyui/models/clip_vision"
-mkdir -p "$DST"
-
-if [ -f "$SRC" ]; then
-  cp -f "$SRC" "$DST/model.safetensors"
-  echo "worker-comfyui: Copied CLIP Vision -> $DST/model.safetensors"
-else
-  echo "worker-comfyui: WARNING: CLIP Vision not found at $SRC"
-fi
-# --- end ---
-
 
 echo "worker-comfyui: Starting ComfyUI"
 

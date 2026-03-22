@@ -15,8 +15,12 @@ ENV DEBIAN_FRONTEND=noninteractive \
 RUN apt-get update && apt-get install -y \
     python3.12 \
     python3.12-venv \
+    python3.12-dev \
     git \
     wget \
+    build-essential \
+    cmake \
+    pkg-config \
     libgl1 \
     libglib2.0-0 \
     libsm6 \

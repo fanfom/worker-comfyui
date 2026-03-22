@@ -1,6 +1,25 @@
 #!/usr/bin/env bash
+echo "=== START.SH BEGIN v2026-03-23-02 ==="
+date
+echo "pwd=$(pwd)"
+echo "whoami=$(whoami)"
+ls -lah /runpod-volume/models/ipadapter || true
+ls -lah /comfyui/models || true
+
+
+
 
 mkdir -p /comfyui/models
+
+python3 - <<'PY'
+import re
+p="/comfyui/custom_nodes/ComfyUI_IPAdapter_plus/IPAdapterPlus.py"
+s=open(p,"r",encoding="utf-8",errors="ignore").read()
+files=sorted(set(re.findall(r"ip-adapter-[^\"'\\s]+\\.(?:bin|safetensors)", s)))
+print("PYDEBUG expected ipadapter filenames in code:")
+for f in files[:200]:
+    print("  ", f)
+PY
 
 # Link ipadapter models (Unified Loader expects /comfyui/models/ipadapter)
 if [ -d "/runpod-volume/models/ipadapter" ]; then
@@ -25,6 +44,13 @@ ls -lah /comfyui/models || true
 ls -lah /comfyui/models/ipadapter || true
 ls -lah /comfyui/models/clip_vision || true
 
+python3 - <<'PY'
+import os, glob
+print("PYDEBUG exists /comfyui/models/ipadapter:", os.path.exists("/comfyui/models/ipadapter"))
+print("PYDEBUG list /comfyui/models/ipadapter:", glob.glob("/comfyui/models/ipadapter/*")[:50])
+print("PYDEBUG exists /runpod-volume/models/ipadapter:", os.path.exists("/runpod-volume/models/ipadapter"))
+print("PYDEBUG list /runpod-volume/models/ipadapter:", glob.glob("/runpod-volume/models/ipadapter/*")[:50])
+PY
 
 
 cp -f /src/extra_model_paths.yaml /comfyui/extra_model_paths.yaml

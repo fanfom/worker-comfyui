@@ -11,3 +11,6 @@ runpod_worker_comfy:
   vae: models/vae/
   unet: models/unet/
   ipadapter: models/ipadapter/
+  ipadapters: models/ipadapter/
+  ip_adapters: models/ipadapter/
+  ip_adapter: models/ipadapter/

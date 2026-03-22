@@ -61,6 +61,11 @@ RUN mkdir -p /comfyui/custom_nodes && \
 WORKDIR /
 RUN uv pip install runpod requests websocket-client
 
+
+RUN uv pip install insightface onnxruntime-gpu
+
+
+
 # Worker code (берём их штатные файлы)
 ADD src/start.sh src/network_volume.py handler.py test_input.json ./
 RUN chmod +x /start.sh

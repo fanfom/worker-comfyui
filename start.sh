@@ -25,3 +25,5 @@ for dst in "${TARGETS[@]}"; do
 done
 
 exec "$@"
+
+

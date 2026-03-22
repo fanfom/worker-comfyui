@@ -52,6 +52,11 @@ RUN if [ "$ENABLE_PYTORCH_UPGRADE" = "true" ]; then \
 WORKDIR /comfyui
 ADD src/extra_model_paths.yaml ./
 
+RUN mkdir -p /comfyui/custom_nodes && \
+    git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git /comfyui/custom_nodes/ComfyUI_IPAdapter_plus
+
+
+
 # Handler deps
 WORKDIR /
 RUN uv pip install runpod requests websocket-client
@@ -65,5 +70,6 @@ RUN chmod +x /usr/local/bin/comfy-node-install
 
 COPY scripts/comfy-manager-set-mode.sh /usr/local/bin/comfy-manager-set-mode
 RUN chmod +x /usr/local/bin/comfy-manager-set-mode
+
 
 CMD ["/start.sh"]
